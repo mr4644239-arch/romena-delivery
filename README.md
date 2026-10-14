@@ -70,3 +70,7 @@ Não existe backend nesta versão. O login, cadastro, carrinho, endereços e ped
 - O resumo do carrinho usa seletores simples e memoização para evitar loops de renderização no React.
 - O carrinho foi testado com adição de produto, abertura do drawer e persistência após recarregar a página.
 - Existe um `ErrorBoundary` com ações de recarga e limpeza do armazenamento local para evitar uma tela branca em caso de erro inesperado.
+
+## Guia para apresentação
+
+O arquivo [`docs/GUIA-APRESENTACAO.md`](docs/GUIA-APRESENTACAO.md) explica a arquitetura, o fluxo de dados, o carrinho, o checkout, a persistência, o rastreamento e traz um roteiro de demonstração para apresentar o sistema ao educador.
