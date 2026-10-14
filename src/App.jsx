@@ -11,11 +11,14 @@ import { MenuPage } from './pages/MenuPage'
 import { ProfilePage } from './pages/ProfilePage'
 import { TrackingPage } from './pages/TrackingPage'
 
+const basePath = import.meta.env.BASE_URL.replace(/\/$/, '')
+
 const routeToView = (pathname) => {
-  if (pathname === '/cardapio') return 'menu'
-  if (pathname === '/checkout') return 'checkout'
-  if (pathname === '/perfil') return 'profile'
-  if (pathname === '/rastreio') return 'tracking'
+  const route = pathname.startsWith(basePath) ? pathname.slice(basePath.length) || '/' : pathname
+  if (route === '/cardapio') return 'menu'
+  if (route === '/checkout') return 'checkout'
+  if (route === '/perfil') return 'profile'
+  if (route === '/rastreio') return 'tracking'
   return 'home'
 }
 
@@ -48,7 +51,8 @@ export default function App() {
     setActiveView(view)
     if (view === 'menu') setMenuCategory(category)
     const nextRoute = viewToRoute[view]
-    if (nextRoute && window.location.pathname !== nextRoute) window.history.pushState({}, '', nextRoute)
+    const publicRoute = `${basePath}${nextRoute === '/' ? '/' : nextRoute}`
+    if (nextRoute && window.location.pathname !== publicRoute) window.history.pushState({}, '', publicRoute)
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 

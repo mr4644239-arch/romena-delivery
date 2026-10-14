@@ -6,25 +6,25 @@ import { useAppStore } from '../context/AppContext'
 import { formatBRL } from '../lib/formatters'
 
 const visualImage = {
-  margherita: '/images/products/margherita.png',
-  calabresa: '/images/products/calabresa.png',
-  cheese: '/images/products/quatro-queijos.png',
-  sweet: '/images/products/romeu-julieta.png',
-  caprese: '/images/products/caprese.png',
-  'sertão': '/images/products/carne-seca.png',
-  pistache: '/images/products/pistache.png',
-  coke: '/images/products/coca.png',
-  mate: '/images/products/mate.png',
-  combo: '/images/products/combo-roma.png',
-  family: '/images/products/combo-famiglia.png',
-  brownie: '/images/products/brownie.png'
+  margherita: 'margherita.png',
+  calabresa: 'calabresa.png',
+  cheese: 'quatro-queijos.png',
+  sweet: 'romeu-julieta.png',
+  caprese: 'caprese.png',
+  'sertão': 'carne-seca.png',
+  pistache: 'pistache.png',
+  coke: 'coca.png',
+  mate: 'mate.png',
+  combo: 'combo-roma.png',
+  family: 'combo-famiglia.png',
+  brownie: 'brownie.png'
 }
 
 export function ProductVisual({ product, large = false }) {
   return (
     <div className={`product-visual product-visual--${product.visual} ${large ? 'product-visual--large' : ''}`}>
       <span className="product-visual__shine" />
-      <img className="product-visual__image" src={visualImage[product.visual] ?? '/images/products/margherita.png'} alt={product.name ?? 'Produto Romena'} />
+      <img className="product-visual__image" src={`${import.meta.env.BASE_URL}images/products/${visualImage[product.visual] ?? 'margherita.png'}`} alt={product.name ?? 'Produto Romena'} />
       <span className="product-visual__slice product-visual__slice--one" />
       <span className="product-visual__slice product-visual__slice--two" />
       <span className="product-visual__herb">✦</span>
