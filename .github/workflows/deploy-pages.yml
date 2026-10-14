@@ -29,6 +29,8 @@ jobs:
         run: npm ci
       - name: Gerar versão de produção
         run: npm run build
+      - name: Manter rotas React no GitHub Pages
+        run: cp dist/index.html dist/404.html
       - name: Preparar artefato do Pages
         uses: actions/upload-pages-artifact@v3
         with:
