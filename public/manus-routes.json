@@ -1,0 +1,9 @@
+{
+  "routes": [
+    { "path": "/", "title": "Início" },
+    { "path": "/cardapio", "title": "Cardápio" },
+    { "path": "/checkout", "title": "Finalizar pedido" },
+    { "path": "/perfil", "title": "Meu perfil" },
+    { "path": "/rastreio", "title": "Rastrear pedido" }
+  ]
+}
