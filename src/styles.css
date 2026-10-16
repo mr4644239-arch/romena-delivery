@@ -17,3 +17,5 @@
 
 /* Filtro funcional do histórico no perfil */
 .profile-order-filter{min-height:38px;padding:0 10px;color:var(--ink-soft);background:var(--white);border:1px solid var(--line);border-radius:10px;font-size:.72rem;font-weight:700;cursor:pointer}
+
+.secondary-button--address{min-height:38px;margin-top:12px;padding:0 13px;font-size:.72rem}
