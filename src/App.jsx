@@ -37,6 +37,7 @@ export default function App() {
   const [customizing, setCustomizing] = useState(null)
   const [trackingOrder, setTrackingOrder] = useState(null)
   const [menuCategory, setMenuCategory] = useState('all')
+  const [newAddress, setNewAddress] = useState(false)
 
   const cart = useAppStore((state) => state.cart)
   const user = useAppStore((state) => state.user)
@@ -57,7 +58,13 @@ export default function App() {
   }
 
   const handleCheckout = () => {
+    setNewAddress(false)
     setCartOpen(false)
+    navigate('checkout')
+  }
+
+  const handleNewAddress = () => {
+    setNewAddress(true)
     navigate('checkout')
   }
 
@@ -71,7 +78,7 @@ export default function App() {
     navigate('tracking')
   }
 
-  const page = activeView === 'home' ? <HomePage onNavigate={navigate} onCustomize={setCustomizing} /> : activeView === 'menu' ? <MenuPage initialCategory={menuCategory} onCustomize={setCustomizing} /> : activeView === 'checkout' ? <CheckoutPage onBack={() => cart.length > 0 ? setCartOpen(true) : navigate('menu')} onOrderCreated={handleOrderCreated} onOpenAuth={() => setAuthOpen(true)} /> : activeView === 'profile' ? <ProfilePage onOpenAuth={() => setAuthOpen(true)} onNavigate={navigate} onTrackOrder={handleTrackOrder} /> : <TrackingPage order={trackingOrder} onBack={() => navigate(user ? 'profile' : 'home')} onNavigate={navigate} />
+  const page = activeView === 'home' ? <HomePage onNavigate={navigate} onCustomize={setCustomizing} /> : activeView === 'menu' ? <MenuPage initialCategory={menuCategory} onCustomize={setCustomizing} /> : activeView === 'checkout' ? <CheckoutPage newAddress={newAddress} onBack={() => cart.length > 0 ? setCartOpen(true) : navigate('menu')} onOrderCreated={handleOrderCreated} onOpenAuth={() => setAuthOpen(true)} /> : activeView === 'profile' ? <ProfilePage onOpenAuth={() => setAuthOpen(true)} onNavigate={navigate} onTrackOrder={handleTrackOrder} onNewAddress={handleNewAddress} /> : <TrackingPage order={trackingOrder} onBack={() => navigate(user ? 'profile' : 'home')} onNavigate={navigate} />
 
   return <div className="app-shell"><AppHeader activeView={activeView} onNavigate={navigate} onOpenCart={() => setCartOpen(true)} onOpenAuth={() => setAuthOpen(true)} /><motion.div key={activeView} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.25 }}>{page}</motion.div><footer className="site-footer"><div className="container footer-grid"><div><div className="footer-brand"><span>R</span><strong>romena</strong></div><p>Pizza feita para virar memória.<br />Com calma, cuidado e bons ingredientes.</p></div><div><span className="footer-heading">Navegue</span><button onClick={() => navigate('menu')}>Cardápio</button><button onClick={() => navigate('tracking')}>Rastrear pedido</button><button onClick={() => navigate('profile')}>Meu perfil</button></div><div><span className="footer-heading">Atendimento</span><span>Todos os dias · 18h às 23h30</span><a href="mailto:oi@romena.delivery">oi@romena.delivery</a><a href="https://wa.me/5511999999999" target="_blank" rel="noreferrer">WhatsApp</a></div><div className="footer-signoff"><span>Feito com massa,</span><strong>Romena & Delivery <span>✦</span></strong></div></div><div className="container footer-bottom"><span>© 2025 Romena & Delivery. Todos os direitos reservados.</span><span>Feito para prototipagem local · dados salvos no navegador</span></div></footer><CartDrawer open={cartOpen} onClose={() => { setCartOpen(false); if (activeView === 'checkout' && cart.length > 0) navigate('menu') }} onCheckout={handleCheckout} onExploreMenu={() => { setCartOpen(false); navigate('menu') }} /><AuthModal open={authOpen} onClose={() => setAuthOpen(false)} />{customizing && <ProductModal product={customizing} onClose={() => setCustomizing(null)} />}<WhatsAppButton /><ToastLayer /></div>
 }

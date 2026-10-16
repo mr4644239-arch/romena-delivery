@@ -11,7 +11,7 @@ const paymentMethods = [
 
 const emptyAddress = { label: 'Casa', street: '', number: '', complement: '', neighborhood: '', city: 'São Paulo', zip: '' }
 
-export function CheckoutPage({ onBack, onOrderCreated, onOpenAuth }) {
+export function CheckoutPage({ onBack, onOrderCreated, onOpenAuth, newAddress = false }) {
   const user = useAppStore((state) => state.user)
   const addresses = useAppStore((state) => state.addresses)
   const saveAddress = useAppStore((state) => state.saveAddress)
@@ -30,8 +30,12 @@ export function CheckoutPage({ onBack, onOrderCreated, onOpenAuth }) {
   const [paymentTouched, setPaymentTouched] = useState(false)
 
   useEffect(() => {
-    if (!address.id && addresses.length > 0) setAddress({ ...addresses[0] })
-  }, [addresses, address.id])
+    if (newAddress) setAddress({ ...emptyAddress })
+  }, [newAddress])
+
+  useEffect(() => {
+    if (!newAddress && !address.id && addresses.length > 0) setAddress({ ...addresses[0] })
+  }, [addresses, address.id, newAddress])
 
   const isAddressValid = address.street && address.number && address.neighborhood && address.zip
   const isCardValid = card.number.length === 16 && card.name && card.expiry.length >= 4 && card.cvv.length === 3
