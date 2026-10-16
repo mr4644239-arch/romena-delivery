@@ -36,3 +36,6 @@
 .delivery-bike{position:absolute;z-index:6;display:grid;place-items:center;width:38px;height:38px;transform:translate(-50%,-50%);filter:drop-shadow(0 5px 5px rgba(60,45,35,.2))}.delivery-bike__bubble{display:grid;place-items:center;width:34px;height:34px;color:var(--white);background:var(--coral);border:3px solid var(--cream);border-radius:50%;transform:rotate(-8deg)}.delivery-bike__pulse{position:absolute;width:46px;height:46px;border:2px solid rgba(238,90,56,.35);border-radius:50%;animation:bikePulse 1.7s infinite}.map-live-badge{position:absolute;z-index:7;right:14px;top:14px;display:inline-flex;align-items:center;gap:6px;padding:7px 10px;color:var(--ink-soft);background:rgba(255,250,243,.92);border:1px solid rgba(255,255,255,.85);border-radius:9px;box-shadow:0 5px 15px rgba(55,85,50,.1);font-size:.62rem;font-weight:700}.map-live-badge .live-dot{width:6px;height:6px;color:var(--coral);background:var(--coral)}
 @keyframes bikePulse{0%,to{opacity:.2;transform:scale(.85)}50%{opacity:.65;transform:scale(1.12)}}
 @media (max-width:700px){.tracking-card__map{height:260px}.map-live-badge{right:10px;top:10px}.delivery-bike__bubble{width:31px;height:31px}.delivery-bike{width:34px;height:34px}}
+
+
+.map-bike-icon{z-index:8;font-size:7px;paint-order:stroke;stroke:var(--cream);stroke-width:1.5px;filter:drop-shadow(0 2px 2px rgba(60,45,35,.28))}
