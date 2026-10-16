@@ -39,3 +39,6 @@
 
 
 .map-bike-icon{z-index:8;font-size:7px;paint-order:stroke;stroke:var(--cream);stroke-width:1.5px;filter:drop-shadow(0 2px 2px rgba(60,45,35,.28))}
+
+
+.map-street--route{stroke-width:6;stroke:rgba(255,255,255,.96)}
