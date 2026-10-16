@@ -14,3 +14,6 @@
 .product-card:hover .product-visual__image{transform:scale(1.04) rotate(-2deg)}
 .product-visual--large .product-visual__image{width:92%;height:92%}
 .cart-item .product-visual__image{width:90%;height:90%}
+
+/* Filtro funcional do histórico no perfil */
+.profile-order-filter{min-height:38px;padding:0 10px;color:var(--ink-soft);background:var(--white);border:1px solid var(--line);border-radius:10px;font-size:.72rem;font-weight:700;cursor:pointer}
