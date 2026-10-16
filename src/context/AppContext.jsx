@@ -111,6 +111,17 @@ export const useAppStore = create(
         return order
       },
 
+      setOrderProgress: (orderId, progress) => {
+        const nextProgress = Math.max(0, Math.min(3, Number(progress) || 0))
+        const status = ['confirmed', 'baking', 'out_for_delivery', 'delivered'][nextProgress]
+        set((state) => ({
+          orders: state.orders.map((order) => (
+            order.id === orderId ? { ...order, progress: nextProgress, status } : order
+          ))
+        }))
+        return nextProgress
+      },
+
       setToast: (toast) => set({ toast }),
       dismissToast: () => set({ toast: null }),
 
