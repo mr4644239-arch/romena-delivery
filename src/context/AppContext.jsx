@@ -6,7 +6,8 @@ import { getDeliveryFee } from '../lib/formatters'
 const couponMap = {
   ROMENA10: { code: 'ROMENA10', label: '10% de desconto', type: 'percent', value: 10 },
   BORDA10: { code: 'BORDA10', label: 'Borda recheada grátis', type: 'fixed', value: 10 },
-  COMBOROMA: { code: 'COMBOROMA', label: 'R$ 8 de desconto', type: 'fixed', value: 8 }
+  COMBOROMA: { code: 'COMBOROMA', label: 'R$ 8 de desconto', type: 'fixed', value: 8 },
+  GUILA123: { code: 'GUILA123', label: 'Cupom especial aplicado', type: 'fixed', value: 0, easterEgg: 'guila123' }
 }
 
 const buildId = (prefix) => `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`
@@ -102,6 +103,7 @@ export const useAppStore = create(
           address,
           payment,
           changeFor,
+          easterEgg: state.coupon?.easterEgg ?? null,
           subtotal,
           deliveryFee,
           discount,
