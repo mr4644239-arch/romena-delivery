@@ -22,3 +22,17 @@
 
 
 .history-order__products{display:block;max-width:420px;margin-top:4px;color:var(--ink-soft)!important;font-size:.7rem!important;line-height:1.35}
+
+/* Mapa de rota da entrega com moto em movimento */
+.tracking-card__map{height:320px;background:linear-gradient(135deg,#e9f0e4,#dce8d8);isolation:isolate}
+.map-grid{opacity:.45;background-image:linear-gradient(25deg,transparent 47%,rgba(116,145,105,.18) 48%,rgba(116,145,105,.18) 51%,transparent 52%),linear-gradient(114deg,transparent 47%,rgba(116,145,105,.14) 48%,rgba(116,145,105,.14) 51%,transparent 52%),repeating-linear-gradient(0deg,transparent 0 35px,rgba(255,255,255,.72) 36px 38px),repeating-linear-gradient(90deg,transparent 0 54px,rgba(255,255,255,.72) 55px 57px)}
+.map-block{position:absolute;border:1px solid rgba(117,146,104,.18);border-radius:9px;background:rgba(255,255,255,.28);transform:rotate(-8deg)}
+.map-block--one{left:7%;top:12%;width:22%;height:22%}.map-block--two{right:8%;top:14%;width:24%;height:26%;transform:rotate(12deg)}.map-block--three{left:34%;bottom:8%;width:24%;height:20%;transform:rotate(5deg)}
+.map-street-map{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.map-street{fill:none;stroke:rgba(255,255,255,.92);stroke-width:5;stroke-linecap:round;filter:drop-shadow(0 1px 1px rgba(76,105,71,.12))}.map-street--thin{stroke-width:2.2;stroke:rgba(255,255,255,.7)}
+.map-route-base{fill:none;stroke:rgba(120,142,110,.4);stroke-width:2;stroke-dasharray:1.5 3;stroke-linecap:round}.map-route-progress{fill:none;stroke:var(--coral);stroke-width:2.8;stroke-linecap:round;filter:drop-shadow(0 2px 2px rgba(207,64,39,.22))}
+.map-pin{z-index:3}.map-pin--home{right:13%;bottom:17%}.map-pin--kitchen{left:10%;top:16%}
+.map-label{z-index:4;padding:5px 8px;color:var(--ink-soft);background:rgba(255,250,243,.9);border:1px solid rgba(255,255,255,.8);border-radius:7px;box-shadow:0 4px 12px rgba(55,85,50,.08);font-size:.62rem}.map-label--home{right:9%;bottom:8%}.map-label--kitchen{left:8%;top:7%}
+.delivery-bike{position:absolute;z-index:6;display:grid;place-items:center;width:38px;height:38px;transform:translate(-50%,-50%);filter:drop-shadow(0 5px 5px rgba(60,45,35,.2))}.delivery-bike__bubble{display:grid;place-items:center;width:34px;height:34px;color:var(--white);background:var(--coral);border:3px solid var(--cream);border-radius:50%;transform:rotate(-8deg)}.delivery-bike__pulse{position:absolute;width:46px;height:46px;border:2px solid rgba(238,90,56,.35);border-radius:50%;animation:bikePulse 1.7s infinite}.map-live-badge{position:absolute;z-index:7;right:14px;top:14px;display:inline-flex;align-items:center;gap:6px;padding:7px 10px;color:var(--ink-soft);background:rgba(255,250,243,.92);border:1px solid rgba(255,255,255,.85);border-radius:9px;box-shadow:0 5px 15px rgba(55,85,50,.1);font-size:.62rem;font-weight:700}.map-live-badge .live-dot{width:6px;height:6px;color:var(--coral);background:var(--coral)}
+@keyframes bikePulse{0%,to{opacity:.2;transform:scale(.85)}50%{opacity:.65;transform:scale(1.12)}}
+@media (max-width:700px){.tracking-card__map{height:260px}.map-live-badge{right:10px;top:10px}.delivery-bike__bubble{width:31px;height:31px}.delivery-bike{width:34px;height:34px}}
