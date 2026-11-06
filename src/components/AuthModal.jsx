@@ -26,7 +26,13 @@ export function AuthModal({ open, onClose }) {
       setToast({ title: mode === 'login' ? 'Que bom ter você de volta!' : 'Conta criada com carinho.', message: mode === 'signup' ? 'Seu perfil já está pronto para o próximo pedido.' : 'Seus pedidos e endereços foram carregados.' })
       onClose()
     } catch (error) {
-      setToast({ title: 'Não foi possível entrar', message: error.message || 'Confira seus dados e tente novamente.', type: 'error' })
+      const errorMessage = String(error?.message || '')
+      const isEmailRateLimit = /rate limit|too many requests|email rate/i.test(errorMessage)
+      setToast({
+        title: isEmailRateLimit ? 'Limite de e-mails atingido' : 'Não foi possível entrar',
+        message: isEmailRateLimit ? 'O Supabase bloqueou temporariamente novos e-mails de confirmação. Aguarde o limite liberar ou use outro e-mail; repetir agora não resolve.' : errorMessage || 'Confira seus dados e tente novamente.',
+        type: 'error'
+      })
     }
   }
 
