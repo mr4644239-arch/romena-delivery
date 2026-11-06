@@ -31,7 +31,9 @@ export const useAppStore = create(
 
       initializeAuth: async () => {
         const { data } = await supabase.auth.getSession()
-        if (data.session?.user) {
+        if (!data.session?.user) {
+          set({ user: null, addresses: [], orders: [] })
+        } else {
           set({ user: mapUser(data.session.user) })
           try {
             const cloud = await loadCloudData(data.session.user.id)
@@ -55,19 +57,25 @@ export const useAppStore = create(
       },
 
       signIn: async ({ name, email, password, mode = 'login' }) => {
+        const normalizedEmail = email.trim().toLowerCase()
         const result = mode === 'signup'
-          ? await supabase.auth.signUp({ email, password, options: { data: { name } } })
-          : await supabase.auth.signInWithPassword({ email, password })
+          ? await supabase.auth.signUp({ email: normalizedEmail, password, options: { data: { name: name.trim() } } })
+          : await supabase.auth.signInWithPassword({ email: normalizedEmail, password })
         if (result.error) throw result.error
-        if (result.data.user) set({ user: mapUser(result.data.user) })
-        return result.data
+        if (mode === 'signup' && result.data.user && !result.data.session) {
+          set({ user: null, addresses: [], orders: [] })
+          return { ...result.data, needsEmailConfirmation: true }
+        }
+        if (result.data.session?.user) set({ user: mapUser(result.data.session.user) })
+        return { ...result.data, needsEmailConfirmation: false }
       },
       signOut: async () => { await supabase.auth.signOut(); set({ user: null, addresses: [], orders: [] }) },
 
       saveAddress: async (address) => {
-        const user = get().user
-        const payload = { ...address, user_id: user?.id, zip: address.zip.replace(/\D/g, '') }
-        if (user?.id) {
+        const { data: sessionData } = await supabase.auth.getSession()
+        const sessionUser = sessionData.session?.user
+        const payload = { ...address, user_id: sessionUser?.id, zip: address.zip.replace(/\D/g, '') }
+        if (sessionUser?.id) {
           const clean = { label: payload.label, street: payload.street, number: payload.number, complement: payload.complement || null, neighborhood: payload.neighborhood, city: payload.city, zip: payload.zip, user_id: user.id }
           const query = address.id && !String(address.id).startsWith('address-') ? supabase.from('addresses').update(clean).eq('id', address.id).select().single() : supabase.from('addresses').insert(clean).select().single()
           const { data, error } = await query
@@ -80,12 +88,13 @@ export const useAppStore = create(
       },
 
       createOrder: async ({ address, payment, changeFor }) => {
+        const { data: sessionData } = await supabase.auth.getSession()
+        const sessionUser = sessionData.session?.user
+        if (!sessionUser) throw new Error('Sua sessão expirou. Entre novamente na sua conta para confirmar o pedido.')
         const state = get(); const subtotal = state.cart.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0); const deliveryFee = getDeliveryFee(subtotal); const discount = state.coupon ? state.coupon.type === 'percent' ? subtotal * (state.coupon.value / 100) : Math.min(state.coupon.value, subtotal) : 0
         const order = { id: `ROM-${Math.floor(1000 + Math.random() * 9000)}`, createdAt: new Date().toISOString(), etaMinutes: 35, progress: 0, status: 'confirmed', items: state.cart, address, payment, changeFor, easterEgg: state.coupon?.easterEgg ?? null, subtotal, deliveryFee, discount, total: Math.max(0, subtotal + deliveryFee - discount) }
-        if (state.user?.id) {
-          const { error } = await supabase.from('orders').insert({ id: order.id, user_id: state.user.id, created_at: order.createdAt, eta_minutes: order.etaMinutes, progress: order.progress, status: order.status, items: order.items, address: order.address, payment: order.payment, change_for: order.changeFor || null, easter_egg: order.easterEgg, subtotal: order.subtotal, delivery_fee: order.deliveryFee, discount: order.discount, total: order.total })
-          if (error) throw error
-        }
+        const { error } = await supabase.from('orders').insert({ id: order.id, user_id: sessionUser.id, created_at: order.createdAt, eta_minutes: order.etaMinutes, progress: order.progress, status: order.status, items: order.items, address: order.address, payment: order.payment, change_for: order.changeFor || null, easter_egg: order.easterEgg, subtotal: order.subtotal, delivery_fee: order.deliveryFee, discount: order.discount, total: order.total })
+        if (error) throw error
         set((current) => ({ orders: [order, ...current.orders], cart: [], coupon: null }))
         return order
       },

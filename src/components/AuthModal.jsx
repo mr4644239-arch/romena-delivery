@@ -17,7 +17,12 @@ export function AuthModal({ open, onClose }) {
     event.preventDefault()
     if (!form.email || !form.password || (mode === 'signup' && !form.name)) return
     try {
-      await signIn({ name: form.name, email: form.email, password: form.password, mode })
+      const result = await signIn({ name: form.name, email: form.email, password: form.password, mode })
+      if (result.needsEmailConfirmation) {
+        setToast({ title: 'Confirme seu e-mail', message: `Enviamos um link de confirmação para ${form.email.trim().toLowerCase()}. Depois, volte e entre com a mesma senha.` })
+        setMode('login')
+        return
+      }
       setToast({ title: mode === 'login' ? 'Que bom ter você de volta!' : 'Conta criada com carinho.', message: mode === 'signup' ? 'Seu perfil já está pronto para o próximo pedido.' : 'Seus pedidos e endereços foram carregados.' })
       onClose()
     } catch (error) {
