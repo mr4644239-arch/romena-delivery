@@ -41,6 +41,16 @@ export default function App() {
 
   const cart = useAppStore((state) => state.cart)
   const user = useAppStore((state) => state.user)
+  const initializeAuth = useAppStore((state) => state.initializeAuth)
+  const loadProducts = useAppStore((state) => state.loadProducts)
+
+  useEffect(() => {
+    let subscription
+    initializeAuth().then((result) => { subscription = result?.data?.subscription })
+    return () => subscription?.unsubscribe()
+  }, [initializeAuth])
+
+  useEffect(() => { loadProducts() }, [loadProducts])
 
   useEffect(() => {
     const handlePopState = () => setActiveView(routeToView(window.location.pathname))

@@ -5,13 +5,16 @@ import { categories, menuItems, promotions, testimonials } from '../data/menu'
 import { formatBRL } from '../lib/formatters'
 import { DeliveryPromise } from '../components/AppShell'
 import { ProductCard } from '../components/ProductCard'
+import { useAppStore } from '../context/AppContext'
 
 const categoryIcons = { Sparkles, Pizza, ChefHat, CakeSlice, CupSoda, Boxes }
 
 export function HomePage({ onNavigate, onCustomize }) {
   const [promoIndex, setPromoIndex] = useState(0)
+  const remoteProducts = useAppStore((state) => state.products)
+  const catalog = remoteProducts.length ? remoteProducts : menuItems
   const promo = promotions[promoIndex]
-  const featured = menuItems.filter((item) => ['margherita', 'caprese', 'romeu-julieta', 'combo-roma'].includes(item.id))
+  const featured = catalog.filter((item) => ['margherita', 'caprese', 'romeu-julieta', 'combo-roma'].includes(item.id))
 
   const changePromo = (direction) => setPromoIndex((current) => (current + direction + promotions.length) % promotions.length)
 
