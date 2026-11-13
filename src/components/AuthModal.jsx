@@ -39,9 +39,13 @@ export function AuthModal({ open, onClose }) {
 
   const handleSocial = async () => {
     try {
-      await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } })
+      const { error } = await supabase.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } })
+      if (error) throw error
     } catch (error) {
-      setToast({ title: 'Login social indisponível', message: error.message || 'Use e-mail e senha.', type: 'error' })
+      const message = /provider is not enabled|unsupported provider/i.test(String(error?.message || ''))
+        ? 'O login com Google ainda não foi habilitado no painel do Supabase. Use e-mail e senha por enquanto.'
+        : error?.message || 'Use e-mail e senha.'
+      setToast({ title: 'Login com Google indisponível', message, type: 'error' })
     }
   }
 
