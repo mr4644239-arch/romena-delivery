@@ -28,9 +28,10 @@ export function AuthModal({ open, onClose }) {
     } catch (error) {
       const errorMessage = String(error?.message || '')
       const isEmailRateLimit = /rate limit|too many requests|email rate/i.test(errorMessage)
+      const isEmailNotConfirmed = /email not confirmed|email_not_confirmed/i.test(errorMessage)
       setToast({
-        title: isEmailRateLimit ? 'Limite de e-mails atingido' : 'Não foi possível entrar',
-        message: isEmailRateLimit ? 'O Supabase bloqueou temporariamente novos e-mails de confirmação. Aguarde o limite liberar ou use outro e-mail; repetir agora não resolve.' : errorMessage || 'Confira seus dados e tente novamente.',
+        title: isEmailRateLimit ? 'Limite de e-mails atingido' : isEmailNotConfirmed ? 'Confirme seu e-mail antes de entrar' : 'Não foi possível entrar',
+        message: isEmailRateLimit ? 'O Supabase bloqueou temporariamente novos e-mails de confirmação. Aguarde o limite liberar ou use outro e-mail; repetir agora não resolve.' : isEmailNotConfirmed ? 'Sua conta já existe, mas o link enviado por e-mail ainda não foi confirmado. Abra a mensagem do Supabase, clique no link e depois entre novamente.' : errorMessage || 'Confira seus dados e tente novamente.',
         type: 'error'
       })
     }
