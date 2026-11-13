@@ -72,18 +72,14 @@ export function CheckoutPage({ onBack, onOrderCreated, onOpenAuth, newAddress = 
     setStep(3)
   }
 
-  const finishOrder = async () => {
+  const finishOrder = () => {
     if (!user) {
       onOpenAuth()
       setToast({ title: 'Entre para confirmar', message: 'Assim você consegue acompanhar o pedido depois.' })
       return
     }
-    try {
-      const order = await createOrder({ address, payment: payment === 'delivery' ? `Na entrega · ${deliveryPayment === 'cash' ? 'Dinheiro' : 'Maquininha'}` : payment === 'pix' ? 'PIX' : 'Cartão', changeFor })
-      onOrderCreated(order)
-    } catch (error) {
-      setToast({ title: 'Não foi possível salvar o pedido', message: error.message || 'Tente novamente em instantes.', type: 'error' })
-    }
+    const order = createOrder({ address, payment: payment === 'delivery' ? `Na entrega · ${deliveryPayment === 'cash' ? 'Dinheiro' : 'Maquininha'}` : payment === 'pix' ? 'PIX' : 'Cartão', changeFor })
+    onOrderCreated(order)
   }
 
   if (cart.length === 0) return <main className="checkout-page"><div className="container"><div className="empty-state empty-state--checkout"><div className="empty-state__icon"><ShoppingBagIcon /></div><h2>Seu carrinho está vazio.</h2><p>Volte ao cardápio e monte um pedido antes de finalizar.</p><button className="primary-button" onClick={onBack}>Voltar ao cardápio <ArrowRight size={17} /></button></div></div></main>
