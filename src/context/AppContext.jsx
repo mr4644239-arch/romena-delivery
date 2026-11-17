@@ -140,14 +140,14 @@ export const useAppStore = create(
       name: 'romena-delivery-store',
       partialize: (state) => ({
         cart: state.cart,
+        user: state.user,
         addresses: state.addresses,
         orders: state.orders,
         coupon: state.coupon
       }),
       merge: (persistedState, currentState) => ({
         ...currentState,
-        ...persistedState,
-        user: null
+        ...persistedState
       })
     }
   )
