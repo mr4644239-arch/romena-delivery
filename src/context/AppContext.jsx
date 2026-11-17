@@ -11,12 +11,21 @@ const couponMap = {
 }
 
 const buildId = (prefix) => `${prefix}-${Date.now()}-${Math.random().toString(16).slice(2)}`
+const localUserKey = 'romena-local-user'
+const readLocalUser = () => {
+  try {
+    const saved = window.localStorage.getItem(localUserKey)
+    return saved ? JSON.parse(saved) : null
+  } catch {
+    return null
+  }
+}
 
 export const useAppStore = create(
   persist(
     (set, get) => ({
       cart: [],
-      user: null,
+      user: readLocalUser(),
       addresses: [],
       orders: [],
       coupon: null,
@@ -64,17 +73,21 @@ export const useAppStore = create(
 
       clearCoupon: () => set({ coupon: null }),
 
-      signIn: ({ name, email }) =>
-        set({
-          user: {
-            id: buildId('user'),
-            name: name || email.split('@')[0],
-            email,
-            memberSince: new Date().toISOString()
-          }
-        }),
+      signIn: ({ name, email }) => {
+        const user = {
+          id: buildId('user'),
+          name: name || email.split('@')[0],
+          email,
+          memberSince: new Date().toISOString()
+        }
+        window.localStorage.setItem(localUserKey, JSON.stringify(user))
+        set({ user })
+      },
 
-      signOut: () => set({ user: null }),
+      signOut: () => {
+        window.localStorage.removeItem(localUserKey)
+        set({ user: null })
+      },
 
       saveAddress: (address) => {
         const entry = { ...address, id: address.id ?? buildId('address') }
@@ -147,7 +160,8 @@ export const useAppStore = create(
       }),
       merge: (persistedState, currentState) => ({
         ...currentState,
-        ...persistedState
+        ...persistedState,
+        user: readLocalUser() || persistedState?.user || null
       })
     }
   )
